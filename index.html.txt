@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acarrex - Mudanzas Profesionales</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body id="pagina-principal">
+
+    <nav class="main-nav">
+        <div class="logo">
+            <a href="#">
+                <img src="image_5b2435.png" alt="Logo de Acarrex Mudanzas" class="header-logo">
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Inicio</a></li>
+            <li class="dropdown-menu">
+                <a href="#" id="cobertura-btn">Cobertura y Cotización <span class="arrow-down"></span></a>
+                <div class="dropdown-content" id="cobertura-dropdown">
+                    <div class="location-selector">
+                        <label for="departamento">Selecciona Departamento:</label>
+                        <select id="departamento">
+                            <option value="">Cargando...</option>
+                            </select>
+
+                        <label for="municipio">Selecciona Municipio:</label>
+                        <select id="municipio" disabled>
+                            <option value="">Selecciona un departamento primero</option>
+                            </select>
+                        <button id="cotizar-btn" class="btn-primary" disabled>Ir a Cotizar</button>
+                    </div>
+                </div>
+            </li>
+            <li><a href="#">Nuestros Servicios</a></li>
+            <li><a href="#">Testimonios</a></li>
+            <li><a href="#contacto" class="contact-btn">Contacto</a></li>
+        </ul>
+        <div class="contact-info-nav">
+            <span>Llámanos: <a href="tel:+573209581095">320 958 1095</a></span>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Mudanzas Rápidas y Seguras con Acarrex</h1>
+            <p>Tu mejor opción para mudanzas residenciales y comerciales en Colombia.</p>
+            <a href="#contacto" class="btn-primary hero-btn">¡Cotiza tu Mudanza Ahora!</a>
+        </div>
+    </section>
+
+    <main class="content-wrapper">
+        <h2>Nuestros Servicios Destacados</h2>
+        <p>En Acarrex, nos encargamos de todo para que tu mudanza sea una experiencia sin estrés.</p>
+        <div class="services-grid">
+            <div class="service-item">
+                <i class="fas fa-box"></i>
+                <h3>Empaque Profesional</h3>
+                <p>Protegemos tus pertenencias con los mejores materiales.</p>
+            </div>
+            <div class="service-item">
+                <i class="fas fa-truck-moving"></i>
+                <h3>Transporte Eficiente</h3>
+                <p>Nuestra flota garantiza entregas puntuales y seguras.</p>
+            </div>
+            <div class="service-item">
+                <i class="fas fa-chair"></i>
+                <h3>Armado y Desarmado</h3>
+                <p>Montamos y desmontamos tus muebles con expertos.</p>
+            </div>
+        </div>
+    </main>
+
+    <section class="contact-section" id="contacto">
+        <div class="container">
+            <h2>Contáctanos y Obtén Tu Cotización</h2>
+            <p>¿Listo para tu mudanza? ¡Estamos aquí para ayudarte! Contáctanos para un servicio rápido y confiable.</p>
+
+            <div class="contact-details">
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <h3>Llámanos</h3>
+                    <a href="tel:+573209581095" class="contact-number">320 958 1095</a>
+                    <p>Disponible 24/7 para emergencias y consultas.</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>Escríbenos por WhatsApp</h3>
+                    <a href="https://wa.me/573209581095" target="_blank" class="btn-whatsapp">Enviar WhatsApp</a>
+                    <p>Respuesta rápida para todas tus preguntas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>Acarrex</h3>
+                <p>&copy; 2025 Acarrex. Todos los derechos reservados.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Contacto Rápido</h3>
+                <p><i class="fas fa-phone-alt"></i> Teléfono: <a href="tel:+573209581095">320 958 1095</a></p>
+                <p><i class="fab fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/573209581095" target="_blank">Enviar Mensaje</a></p>
+            </div>
+            <div class="footer-col">
+                <h3>Navegación</h3>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#cobertura-dropdown">Cobertura</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/573209581095" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>
