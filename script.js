@@ -1,111 +1,124 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const departamentoSelect = document.getElementById('departamento');
-    const municipioSelect = document.getElementById('municipio');
-    const cotizarBtn = document.getElementById('cotizar-btn');
-    const coberturaBtn = document.getElementById('cobertura-btn');
-    const coberturaDropdown = document.getElementById('cobertura-dropdown');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-    const serviceItems = document.querySelectorAll('.service-item');
+// Improved JavaScript Code
 
-    const datosColombia = {
-        "Cundinamarca": ["Bogotá D.C.", "Zipaquirá", "Chía", "Cajicá", "Sopó", "Tabio", "Tenjo", "Facatativá", "Madrid", "Mosquera", "Funza", "Soacha", "Fusagasugá", "Girardot", "Villapinzón", "Simijaca"],
-        "Antioquia": ["Medellín", "Envigado", "Itagüí", "Sabaneta", "La Estrella", "Rionegro", "Caldas", "Bello"],
-        "Valle del Cauca": ["Cali", "Palmira", "Buga", "Cartago", "Jamundí", "Yumbo"],
-        "Santander": ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta", "Barrancabermeja"],
-        "Atlántico": ["Barranquilla", "Soledad", "Malambo", "Puerto Colombia"]
-        // Agrega más departamentos y municipios según tu cobertura
-    };
+// Global error handlers
+window.addEventListener('error', function(event) {
+    console.error('Error occurred: ', event.message);
+});
 
-    function cargarDepartamentos() {
-        departamentoSelect.innerHTML = '<option value="">Selecciona un departamento</option>';
-        for (const depto in datosColombia) {
-            const option = document.createElement('option');
-            option.value = depto;
-            option.textContent = depto;
-            departamentoSelect.appendChild(option);
-        }
-        departamentoSelect.disabled = false;
+window.addEventListener('unhandledrejection', function(event) {
+    console.error('Unhandled promise rejection: ', event.reason);
+});
+
+// DOM element validation
+function validateElement(selector) {
+    const element = document.querySelector(selector);
+    if (!element) {
+        console.error(`Element not found for selector: ${selector}`);
     }
+    return element;
+}
 
-    departamentoSelect.addEventListener('change', () => {
-        const selectedDepto = departamentoSelect.value;
-        municipioSelect.innerHTML = '<option value="">Selecciona un municipio</option>';
-        municipioSelect.disabled = true;
-        cotizarBtn.disabled = true;
+// Form validation
+function validateEmail(email) {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+}
 
-        if (selectedDepto) {
-            const municipios = datosColombia;
-            if (municipios && municipios.hasOwnProperty(selectedDepto)) {
-                municipios[`${selectedDepto}`].forEach(municipio => {
-                    const option = document.createElement('option');
-                    option.value = municipio;
-                    option.textContent = municipio;
-                    municipioSelect.appendChild(option);
-                });
-                municipioSelect.disabled = false;
-            }
+function validatePhone(phone) {
+    const re = /^(\+?\d{1,3}[- ]?)?\d{10}$/;
+    return re.test(String(phone));
+}
+
+// Notification system
+function showNotification(type, message) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerText = message;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+}
+
+// Scroll reveal functionality using IntersectionObserver
+const revealElements = document.querySelectorAll('.reveal');
+const options = { threshold: 0.1 };
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
         }
     });
+}, options);
 
-    municipioSelect.addEventListener('change', () => {
-        cotizarBtn.disabled = !(municipioSelect.value && departamentoSelect.value);
-    });
+revealElements.forEach(el => observer.observe(el));
 
-    cotizarBtn.addEventListener('click', () => {
-        const depto = departamentoSelect.value;
-        const muni = municipioSelect.value;
-        if (depto && muni) {
-            alert(`Vas a cotizar una mudanza en: ${muni}, ${depto}. Redirigiendo a formulario...`);
-            coberturaDropdown.style.display = 'none';
-            dropdownMenu.classList.remove('active');
-        } else {
-            alert('Por favor, selecciona un departamento y un municipio.');
-        }
-    });
+// Dropdown toggle and close on click outside
+function setupDropdown(dropdownSelector) {
+    const dropdown = validateElement(dropdownSelector);
+    const toggleButton = validateElement(`${dropdownSelector} .toggle-button`);
 
-    coberturaBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        dropdownMenu.classList.toggle('active');
-        coberturaDropdown.style.display = dropdownMenu.classList.contains('active') ? 'block' : 'none';
-        const arrow = coberturaBtn.querySelector('.arrow-down');
-        if (arrow) {
-            arrow.style.transform = dropdownMenu.classList.contains('active') ? 'rotate(225deg)' : 'rotate(45deg)';
-        }
+    toggleButton.addEventListener('click', () => {
+        dropdown.classList.toggle('show');
     });
 
     document.addEventListener('click', (event) => {
-        if (!dropdownMenu.contains(event.target) && event.target !== coberturaBtn) {
-            dropdownMenu.classList.remove('active');
-            coberturaDropdown.style.display = 'none';
-            const arrow = coberturaBtn.querySelector('.arrow-down');
-            if (arrow) arrow.style.transform = 'rotate(45deg)';
+        if (!dropdown.contains(event.target) && !toggleButton.contains(event.target)) {
+            dropdown.classList.remove('show');
         }
     });
+}
 
-    // Función para verificar si un elemento está en la vista
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
+setupDropdown('.dropdown');
+
+// Department/municipality loading from Colombia data
+async function loadColombiaData() {
+    try {
+        const response = await fetch('https://api.example.com/colombia-data'); // Replace with actual API
+        const data = await response.json();
+        populateSelectOptions(data);
+    } catch (error) {
+        showNotification('error', 'Failed to load data.');
     }
+}
 
-    // Función para añadir la clase de animación a los elementos de servicio
-    function checkServices() {
-        serviceItems.forEach(item => {
-            if (isInViewport(item)) {
-                item.classList.add('animated');
-            }
-        });
+function populateSelectOptions(data) {
+    const select = validateElement('#municipality-select');
+    data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id;
+        option.textContent = item.name;
+        select.appendChild(option);
+    });
+}
+
+// Cotizar button functionality with confirmations
+validateElement('#cotizar-button').addEventListener('click', () => {
+    const confirmation = confirm('Are you sure you want to proceed?');
+    if (confirmation) {
+        showNotification('success', 'Proceeding with cotizar...');
+    } else {
+        showNotification('info', 'Cotizar canceled.');
     }
-
-    // Escuchar el evento de scroll para activar las animaciones de los servicios
-    window.addEventListener('scroll', checkServices);
-    window.addEventListener('resize', checkServices); // También verificar en caso de redimensionar la ventana
-
-    cargarDepartamentos();
-    checkServices(); // Verificar al cargar la página también
 });
+
+// Contact form submission handling
+validateElement('#contact-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const email = validateElement('#email-input').value;
+    const phone = validateElement('#phone-input').value;
+
+    if (!validateEmail(email)) {
+        showNotification('error', 'Invalid email address.');
+        return;
+    }
+
+    if (!validatePhone(phone)) {
+        showNotification('error', 'Invalid phone number.');
+        return;
+    }
+
+    // Submit the form
+    showNotification('success', 'Form submitted successfully!');
+});
+
+loadColombiaData();
